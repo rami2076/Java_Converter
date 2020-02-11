@@ -5,7 +5,7 @@ import java.util.StringJoiner;
 public class FromString {
 
     public static void main(String[] args) {
-        場所名と場所コード();
+        標識コード取得用SQL();
     }
 
     private static void 工場コードコンボ情報取得() {
@@ -310,4 +310,16 @@ public class FromString {
 
     }
 
+    public static void 標識コード取得用SQL() {
+        StringJoiner joiner = new StringJoiner("\n");
+        
+        joiner.add("SELECT DISTINGUISH_CODE ")
+        .add("FROM MS_COUNTER")
+        .add(" WHERE FACTORY_CODE = '")
+        .add("?factoryCode")
+        .add("AND NUMBERING_TYPE = ")
+        .add("?numberingType");
+        System.out.println(joiner.toString());
+
+    }
 }
