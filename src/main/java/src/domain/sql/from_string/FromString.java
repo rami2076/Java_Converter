@@ -5,7 +5,7 @@ import java.util.StringJoiner;
 public class FromString {
 
     public static void main(String[] args) {
-        標識コード取得用SQL();
+        分納番号_分納小番号の取得用SQL更新用();
     }
 
     private static void 工場コードコンボ情報取得() {
@@ -322,4 +322,36 @@ public class FromString {
         System.out.println(joiner.toString());
 
     }
+    
+    public static void 物件情報の取得用SQL更新() {
+        StringJoiner joiner = new StringJoiner("\n");
+        
+        joiner.add("SELECT ")
+        .add("ORDER_NUMBER, ARTICLE_YEAR, ARTICLE_NUMBER ")
+        .add("FROM TS_ORDER_INFO ")
+        .add("WHERE TS_ORDER_INFO.FACTORY_CODE = ? ")
+        .add("AND TS_ORDER_INFO.ORDER_NUMBER = ? ")
+        .add("ORDER BY ARTICLE_YEAR DESC, ARTICLE_NUMBER DESC");
+        System.out.println(joiner.toString());
+
+    }
+    
+    
+    public static void 分納番号_分納小番号の取得用SQL更新用() {
+        StringJoiner joiner = new StringJoiner("\n");
+        
+
+        joiner.add("SELECT ");
+        joiner.add("INSTALLMENT_NUMBER, INSTALLMENT_SM_NUMBER ");
+        joiner.add("FROM TS_PANEL_DATA ");
+        joiner.add("WHERE FACTORY_CODE = ?factoryCode' AND ");
+        joiner.add("AND ARTICLE_YEAR = ?articleYear");
+        joiner.add("AND ARTICLE_NUMBER = ?articleNumber");
+        joiner.add("AND ORDER_NUMBER = ?orderNumber");
+        joiner.add("AND PAGE_NO_OYA = ?pageNoOya");
+        System.out.println(joiner.toString());
+
+    }
+    
+    
 }
