@@ -3,6 +3,8 @@ package src.domain.uno;
 
 import java.util.List;
 import java.util.function.IntFunction;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 class Main {
     public static void main(String[] args) throws IllegalAccessException, InstantiationException {
