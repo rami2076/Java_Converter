@@ -5,7 +5,7 @@ import java.util.StringJoiner;
 public class FromString {
 
     public static void main(String[] args) {
-        分納番号_分納小番号の取得用SQL更新用();
+        明細部出力用データ取得用玄米保冷庫();
     }
 
     private static void 工場コードコンボ情報取得() {
@@ -312,34 +312,32 @@ public class FromString {
 
     public static void 標識コード取得用SQL() {
         StringJoiner joiner = new StringJoiner("\n");
-        
+
         joiner.add("SELECT DISTINGUISH_CODE ")
-        .add("FROM MS_COUNTER")
-        .add(" WHERE FACTORY_CODE = '")
-        .add("?factoryCode")
-        .add("AND NUMBERING_TYPE = ")
-        .add("?numberingType");
+                .add("FROM MS_COUNTER")
+                .add(" WHERE FACTORY_CODE = '")
+                .add("?factoryCode")
+                .add("AND NUMBERING_TYPE = ")
+                .add("?numberingType");
         System.out.println(joiner.toString());
 
     }
-    
+
     public static void 物件情報の取得用SQL更新() {
         StringJoiner joiner = new StringJoiner("\n");
-        
+
         joiner.add("SELECT ")
-        .add("ORDER_NUMBER, ARTICLE_YEAR, ARTICLE_NUMBER ")
-        .add("FROM TS_ORDER_INFO ")
-        .add("WHERE TS_ORDER_INFO.FACTORY_CODE = ? ")
-        .add("AND TS_ORDER_INFO.ORDER_NUMBER = ? ")
-        .add("ORDER BY ARTICLE_YEAR DESC, ARTICLE_NUMBER DESC");
+                .add("ORDER_NUMBER, ARTICLE_YEAR, ARTICLE_NUMBER ")
+                .add("FROM TS_ORDER_INFO ")
+                .add("WHERE TS_ORDER_INFO.FACTORY_CODE = ? ")
+                .add("AND TS_ORDER_INFO.ORDER_NUMBER = ? ")
+                .add("ORDER BY ARTICLE_YEAR DESC, ARTICLE_NUMBER DESC");
         System.out.println(joiner.toString());
 
     }
-    
-    
+
     public static void 分納番号_分納小番号の取得用SQL更新用() {
         StringJoiner joiner = new StringJoiner("\n");
-        
 
         joiner.add("SELECT ");
         joiner.add("INSTALLMENT_NUMBER, INSTALLMENT_SM_NUMBER ");
@@ -352,6 +350,58 @@ public class FromString {
         System.out.println(joiner.toString());
 
     }
+
+    public static void 業連番号の取得用SQL() {
+        StringJoiner joiner = new StringJoiner("\n");
+
+        joiner.add("SELECT ");
+        joiner.add("FACTORY_CODE, ORDER_NUMBER, BUSINESS_NUMBER, ARTICLE_YEAR, ARTICLE_NUMBER ");
+        joiner.add("FROM TS_ORDER_INFO ");
+        joiner.add("WHERE ");
+        joiner.add("if (!\"\".equals(orderNumber)) {");
+        joiner.add("FACTORY_CODE = '?factoryCode'");
+        joiner.add("AND ORDER_NUMBER = 'orderNumber'");
+        joiner.add("ORDER BY ARTICLE_YEAR DESC, ARTICLE_NUMBER DESC ");
+        joiner.add(")} else if (!\"\".equals(?businessNumber)) {");
+        joiner.add("FACTORY_CODE ='?factoryCode'");
+        joiner.add("AND  BUSINESS_NUMBER = '?businessNumber'");
+        joiner.add("ORDER BY ARTICLE_YEAR DESC, ARTICLE_NUMBER DESC ");
+        System.out.println(joiner.toString());
+
+    }
+
+    public static void 品名コード業連の取得用SQL玄米保冷庫() {
+        StringJoiner joiner = new StringJoiner("\n");
+
+        joiner.add("SELECT ORDER_NUMBER TRADE_NAME, BUSINESS_NUMBER ");
+        joiner.add("FROM MS_KOMEKO ")
+                .add("WHERE FACTORY_CODE ='?PNLFCommonProductPlanConst.FACTORY_CODE_SIGA'")
+                .add(" AND TRADE_CODE = '?orderNumber'")
+                .add(" AND ROWNUM = 1");
+
+        System.out.println(joiner.toString());
+    }
+
+    public static void 品名コード業連の取得用SQLPANEL() {
+            StringJoiner joiner = new StringJoiner("\n");
+            
+            
+            joiner .add("SELECT TPD.TRADE_NAME, BUSINESS_NUMBER ");   
+            joiner.add("FROM TS_PANEL_DATA TPD LEFT JOIN TS_ORDER_INFO TOI ON ") 
+            .add("TPD.FACTORY_CODE = ?TOI.FACTORY_CODE ") 
+            .add("AND TPD.ARTICLE_YEAR = ?TOI.ARTICLE_YEAR ") 
+            .add("AND TPD.ARTICLE_NUMBER = ?TOI.ARTICLE_NUMBER ") 
+            .add("AND TPD.ORDER_NUMBER = ?TOI.ORDER_NUMBER ") 
+            .add("WHERE TPD.FACTORY_CODE = '?factoryCode'")   
+            .add(" AND TPD.ARTICLE_YEAR = '?articleYear'")   
+            .add(" AND TPD.ARTICLE_NUMBER = '?articleNumber'")   
+            .add(" AND TPD.ORDER_NUMBER = '?orderNumber'")   
+            .add(" AND TPD.PAGE_NO_OYA = '?pageNoOya'")
+            .add(" AND ROWNUM = 1");    
+          
+            System.out.println(joiner.toString());
+
+        }
     
     
 }

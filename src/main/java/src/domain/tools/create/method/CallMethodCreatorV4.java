@@ -1,7 +1,6 @@
 package src.domain.tools.create.method;
 
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class CallMethodCreatorV4 {
 
