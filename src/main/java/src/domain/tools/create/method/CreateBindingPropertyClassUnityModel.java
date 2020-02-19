@@ -2,7 +2,7 @@ package src.domain.tools.create.method;
 
 import java.util.Scanner;
 
-public class CreateBindingPropertyClass {
+public class CreateBindingPropertyClassUnityModel {
 
     //入力は以下
     /** 工場コード */
@@ -97,7 +97,7 @@ public class CreateBindingPropertyClass {
         beanField = beanField.replace(";", "");
 
         //そのまま出力
-        return String.format("@BindingProperty(controller=\"%s\",bean=\"%s\")", controllerField, beanField);
+        return String.format("@BindingProperty", controllerField, beanField);
     }
 
 }
