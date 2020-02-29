@@ -2,15 +2,14 @@ package src.domain.tools.create.method;
 
 import java.util.Scanner;
 
-public class CallMethodCreator {
+public class CreateBindingPropertyClassDisunityModel {
 
-
+    //入力は以下
+    /** 工場コード */
+    // private String factoryCode;
 
     /**
      * 
-     * 入力は以下の通り。
-     * private String|BigDecimalHizuke| tanaoroshiNoKaishi;->変換
-     *  private String tanaoroshiNoKaishi;
      * 
      * または
      * q->終了。
@@ -40,9 +39,8 @@ public class CallMethodCreator {
 
         Scanner sc = new Scanner(System.in);
 
-
         while (true) {
-            String line = sc.nextLine().replaceFirst("^\\s+","");
+            String line = sc.nextLine().replaceFirst("^\\s+", "");
             String[] array = line.split("\\s+");
 
             if (array[0].equals("q")) {
@@ -55,7 +53,7 @@ public class CallMethodCreator {
 
             switch (array[0]) {
             case "private":
-                convertAction(array[1], array[2]);
+                convertAction(array[0], array[1], array[2]);
                 break;
             default:
                 defaultAction(line);
@@ -66,29 +64,40 @@ public class CallMethodCreator {
         sc.close();
     }
 
-    private static void convertAction(String signature, String element) {
+    private static void convertAction(String modification, String signature, String beanField) {
+        final String annotation = annotationFormat("", beanField);
 
-        element = element.replace(";", "");
+        if (signature.equals("String")) {
+            signature = "StringProperty";
+        } else {
+            signature = signatureFormat(signature);
+        }
 
-        String headUpperElement = headUpper(element);
+        String line = String.join(" ", modification, signature, beanField);
 
-        String result = String.join("", "info.", "set", headUpperElement, "(this.", element, ".getValue());");
+        System.out.println(annotation);
+        System.out.println(line);
+        System.out.println();
 
-        System.out.println(result);
-    }
-
-    private static String headUpper(String element) {
-        String capitalizedName = Character.toTitleCase(element.charAt(0)) + element.substring(1);
-        return capitalizedName;
     }
 
     private static void defaultAction(String line) {
-        
-        line= line.replace("/**", "//");
-        line =line.replace("*/", "");
+        //そのまま出力
         System.out.println(line);
     }
 
+    private static String signatureFormat(String signature) {
+        return String.format("ObjectProperty<%s>", signature);
 
+    }
+
+    private static String annotationFormat(String controllerField, String beanField) {
+
+        controllerField = controllerField.replace(";", "");
+        beanField = beanField.replace(";", "");
+
+        //そのまま出力
+        return String.format("@BindingProperty(controller=\"%s\",bean=\"%s\")", controllerField, beanField);
+    }
 
 }

@@ -193,3 +193,7 @@ target/classes/.gitignore
 target/classes/META-INF/MANIFEST.MF
 target/classes/META-INF/maven/org.example/JavaTools_/pom.properties
 target/classes/META-INF/maven/org.example/JavaTools_/pom.xml
+/target/
+
+
+/src/test/java/domain/sql/from_string/FromString.java
