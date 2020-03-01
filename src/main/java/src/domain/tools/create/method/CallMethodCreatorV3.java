@@ -11,7 +11,7 @@ public class CallMethodCreatorV3 {
 
     //下記が出力
     //  >// 書損じ区分
-    //  >info.setXxx(this.xxx.getValue());
+    //  >info.setXxx(meisaiInfo.getXxx());
     /**
      * 
      * 入力は以下の通り。

@@ -99,5 +99,4 @@ public class CreateBindingPropertyClassDisunityModel {
         //そのまま出力
         return String.format("@BindingProperty(controller=\"%s\",bean=\"%s\")", controllerField, beanField);
     }
-
 }

@@ -49,13 +49,12 @@ public class FieledCreateV4 {
           addAnotation(field,element);
       }
     
-    
     private static void addAnotation(String line, String element) {
         System.out.println(format(element));
         System.out.println(line);
         System.out.println();
     }
-    
+
     
     private static String format(String element) {
        return  String.format("@DB(\"%s.%s\")", DB_NAME,  CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE,  element));
