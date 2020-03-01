@@ -1,7 +1,5 @@
 package src.domain.gui;
 
-import com.google.common.primitives.Ints;
-import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,7 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import src.Root;
+import src.Top;
 
 import java.io.IOException;
 import java.net.URL;
@@ -107,7 +105,7 @@ public class Main implements Initializable {
     @FXML
     private void goToSub(ActionEvent event) throws IOException {
         Parent tableViewParent = null;
-        URL location = Root.class.getClass().getResource("/src/domain/gui/sub/Sub.fxml");
+        URL location = Top.class.getClass().getResource("/src/domain/gui/sub/Sub.fxml");
         tableViewParent = FXMLLoader.load(location);
 
         Scene tableViewScene = new Scene(tableViewParent);
