@@ -1,4 +1,4 @@
-package org.fx.tool.view.base.generate.field.commnet_field;
+package org.fx.tool.view.base.generate.field.bean_to_model.unite;
 
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
@@ -6,15 +6,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import org.apache.commons.lang3.StringUtils;
-import org.fx.tool.view.base.generate.InputInfo;
+import org.fx.tool.view.base.generate.InputField;
 
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
-public class CommentToFieldController implements Initializable {
+public class BeanToUniteModelFieldController implements Initializable {
 
     @FXML
     private SplitPane labelSplitPane;
@@ -28,19 +29,33 @@ public class CommentToFieldController implements Initializable {
     @FXML
     private TextArea outputTextArea;
 
+
     private ChangeListener<String> changeLister = (observable, oldValue, newValue) -> {
         change(newValue);
     };
 
-    private Function<InputInfo, String> converter;
+    private Function<InputField, String> converter;
 
-    private Function<InputInfo, String> commentDivideFiled = inputInfo -> {
-        String comment = String.join("", "/**", " ", inputInfo.getComment(), " */");
-        String field = String.join(" ", "private", "String", inputInfo.getField(), ";");
+    private Function<InputField, String> commentDivideFiled = inputField -> {
 
+        final String annotation = "@BindingProperty";
 
-        return String.join("\n", comment, field).toString();
+        String signature = "";
+        if (inputField.getSignature().equals("String")) {
+            signature = "StringProperty";
+        } else {
+            signature = signatureFormat(inputField.getSignature());
+        }
+
+        String field = String.join(" ", inputField.getModifier(), signature, inputField.getElement()+";");
+
+        return String.join("\n", inputField.getComment(), annotation, field).toString();
     };
+
+    private static String signatureFormat(String signature) {
+        return String.format("ObjectProperty<%s>", signature);
+
+    }
 
     /**
      * @param lisner
@@ -53,7 +68,7 @@ public class CommentToFieldController implements Initializable {
      * @param newValue
      */
     private void change(String newValue) {
-        List<String> lines = Arrays.asList(newValue.split("\n"));
+        List<String> lines = Arrays.asList(newValue.split(";"));
 
         if (StringUtils.isBlank(newValue)) {
             outputTextArea.setText("");
@@ -63,17 +78,27 @@ public class CommentToFieldController implements Initializable {
         String fields = lines.stream()
                 .map(String::trim)
                 .filter(StringUtils::isNotBlank)
-                .map(input -> Arrays.asList(input.split("\\s+")))
+                .map(input -> Arrays.asList(input.split("\n")))
+                .map(list -> list.stream()
+                        .map(String::trim)
+                        .filter(StringUtils::isNotBlank)
+                        .filter(in -> !in.startsWith("@"))
+                        .collect(Collectors.toList())
+                )
                 .filter(list -> list.size() == 2)
                 .map(list -> {
                     String comment = list.get(0);
                     String field = list.get(1);
-                    return InputInfo.InputInfoBuilder
+                    return InputField.InputFieldBuilder
                             .get()
                             .setComment(comment)
                             .setField(field)
                             .build();
-                }).map(this.converter)
+                })
+                .filter(InputField.isNotBlankField)
+                .filter(InputField.isCorrectField)
+                .map(InputField::parseElement)
+                .map(this.converter)
                 .reduce("", (one, two) -> String.join("\n\n", one, two).toString());
         outputTextArea.setText(fields);
     }
@@ -87,6 +112,7 @@ public class CommentToFieldController implements Initializable {
         initPromptText();
         converter = commentDivideFiled;
 
+
     }
 
     /**
@@ -95,15 +121,24 @@ public class CommentToFieldController implements Initializable {
     private void initPromptText() {
         inputTextArea.setPromptText(
                 "例\r" +
-                        "ユーザID　　　　　userId\r" +
-                        "オブジェクト   object\r"
+                        "/** ユーザID　*/\r" +
+                        "@Annotation\n\r" +
+                        "private String userId;\r" +
+                        "\r" +
+                        "/** オブジェクト　*/\r" +
+                        "private Object object;\r"
         );
         outputTextArea.setPromptText(
                 "例\r" +
                         "/** ユーザID　*/\r" +
-                        "private String userId;\r" +
+                        "@BindingProperty\r" +
+                        "private StringProperty userId;\r" +
+                        "\r" +
                         "/** オブジェクト　*/\r" +
-                        "private String object;\r"
+                        "@BindingProperty\r" +
+                        "private ObjectProperty<Object> object;\r"
         );
     }
+
+
 }

@@ -8,7 +8,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import org.apache.commons.lang3.StringUtils;
-import org.fx.tool.view.base.generate.field.InputInfo;
+import org.fx.tool.view.base.generate.InputInfo;
 
 import java.net.URL;
 import java.util.Arrays;

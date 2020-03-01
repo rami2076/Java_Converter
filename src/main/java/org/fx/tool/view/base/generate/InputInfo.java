@@ -1,4 +1,4 @@
-package org.fx.tool.view.base.generate.field;
+package org.fx.tool.view.base.generate;
 
 public class InputInfo {
     private String comment;

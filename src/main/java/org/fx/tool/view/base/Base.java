@@ -25,7 +25,11 @@ public class Base implements Initializable {
 
         FieldToCommentAddDbView("/org/fx/tool/view/base/generate/field/field_comment_add_db/FieldToCommentAddDbView.fxml"),
 
-        Ui2("/org/fx/tool/view/base/ui2/Ui2.fxml"),
+        BeanToDisuniteModelFieldView("/org/fx/tool/view/base/generate/field/bean_to_model/disunite/BeanToDisuniteModelFieldView.fxml"),
+
+        BeanToUniteModelFieldView("/org/fx/tool/view/base/generate/field/bean_to_model/unite/BeanToUniteModelFieldView.fxml"),
+
+        ModelToModeAccessorView("/org/fx/tool/view/base/generate/accessor/model_to_accessor/ModelToModeAccessorView.fxml"),
 
         Ui3("/org/fx/tool/view/base/ui3/Ui3.fxml");
 
@@ -66,6 +70,22 @@ public class Base implements Initializable {
     private void ui4(ActionEvent event) {
         loadUi(Path.FieldToCommentAddDbView);
     }
+
+    @FXML
+    private void ui5(ActionEvent event) {
+        loadUi(Path.BeanToDisuniteModelFieldView);
+    }
+
+    @FXML
+    private void ui6(ActionEvent event) {
+        loadUi(Path.BeanToUniteModelFieldView);
+    }
+
+    @FXML
+    private void ui7(ActionEvent event) {
+        loadUi(Path.ModelToModeAccessorView);
+    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

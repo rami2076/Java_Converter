@@ -12,6 +12,9 @@
             <Button mnemonicParsing="false" onAction="#ui2" prefHeight="25.0" prefWidth="109.0" text="UI2" />
             <Button mnemonicParsing="false" onAction="#ui3" prefHeight="25.0" prefWidth="109.0" text="UI3" />
             <Button mnemonicParsing="false" onAction="#ui4" prefHeight="25.0" prefWidth="109.0" text="UI4" />
+            <Button mnemonicParsing="false" onAction="#ui5" prefHeight="25.0" prefWidth="109.0" text="UI5" />
+            <Button mnemonicParsing="false" onAction="#ui6" prefHeight="25.0" prefWidth="109.0" text="UI6" />
+            <Button mnemonicParsing="false" onAction="#ui7" prefHeight="25.0" prefWidth="109.0" text="UI7" />
          </children>
       </VBox>
    </left>

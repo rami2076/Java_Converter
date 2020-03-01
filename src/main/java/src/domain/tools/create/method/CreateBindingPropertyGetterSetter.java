@@ -122,7 +122,7 @@ public class CreateBindingPropertyGetterSetter {
 
     private static String getterFormat(String signature, String field, String headUpperField) {
 
-        StringJoiner joiner = new StringJoiner("\r\n");
+        StringJoiner joiner = new StringJoiner("\n");
         String line1 = String.format("public %s get%s(){", signature, headUpperField);
         String line2 = String.format("return %s.get();", field);
         String line3 = "}";
@@ -134,7 +134,7 @@ public class CreateBindingPropertyGetterSetter {
 
     private static String setterFormat(String signature, String field, String headUpperField) {
 
-        StringJoiner joiner = new StringJoiner("\r\n");
+        StringJoiner joiner = new StringJoiner("\n");
         String line1 = String.format("public void set%s(%s %s){", headUpperField, signature, field);
         String line2 = String.format("this.%s.set(%s);", field, field);
         String line3 = "}";

@@ -1,23 +1,21 @@
-package org.fx.tool.view.base.generate.field.field_field;
+package org.fx.tool.view.base.generate.field.bean_to_model.disunite;
 
-import com.google.common.base.CaseFormat;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import org.apache.commons.lang3.StringUtils;
 import org.fx.tool.view.base.generate.InputField;
 
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
-public class AddDbFieldController implements Initializable {
+public class BeanToDisuniteModelFieldController implements Initializable {
 
     @FXML
     private SplitPane labelSplitPane;
@@ -31,8 +29,6 @@ public class AddDbFieldController implements Initializable {
     @FXML
     private TextArea outputTextArea;
 
-    @FXML
-    private TextField tableNameTextField;
 
     private ChangeListener<String> changeLister = (observable, oldValue, newValue) -> {
         change(newValue);
@@ -42,15 +38,32 @@ public class AddDbFieldController implements Initializable {
 
     private Function<InputField, String> commentDivideFiled = inputField -> {
 
-        String annotation = format(inputField.getElement());
+        final String annotation = annotationFormat("", inputField.getElement());
 
-        return String.join("\n", inputField.getComment(), annotation, inputField.getField()).toString();
+        String signature = "";
+        if (inputField.getSignature().equals("String")) {
+            signature = "StringProperty";
+        } else {
+            signature = signatureFormat(inputField.getSignature());
+        }
+
+        String field = String.join(" ", inputField.getModifier(), signature, inputField.getElement() + ";");
+
+        return String.join("\n", inputField.getComment(), annotation, field).toString();
     };
 
-    private String format(String element) {
-        String tableName = Optional.ofNullable(this.tableNameTextField.getText()).orElse("");
-        String columnName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, element);
-        return String.format("@DB(\"%s.%s\")", tableName, columnName);
+    private static String signatureFormat(String signature) {
+        return String.format("ObjectProperty<%s>", signature);
+
+    }
+
+    private static String annotationFormat(String controllerField, String beanField) {
+
+        controllerField = controllerField.replace(";", "");
+        beanField = beanField.replace(";", "");
+
+        //そのまま出力
+        return String.format("@BindingProperty(controller=\"%s\",bean=\"%s\")", controllerField, beanField);
     }
 
     /**
@@ -75,6 +88,12 @@ public class AddDbFieldController implements Initializable {
                 .map(String::trim)
                 .filter(StringUtils::isNotBlank)
                 .map(input -> Arrays.asList(input.split("\n")))
+                .map(list -> list.stream()
+                        .map(String::trim)
+                        .filter(StringUtils::isNotBlank)
+                        .filter(in -> !in.startsWith("@"))
+                        .collect(Collectors.toList())
+                )
                 .filter(list -> list.size() == 2)
                 .map(list -> {
                     String comment = list.get(0);
@@ -102,10 +121,6 @@ public class AddDbFieldController implements Initializable {
         initPromptText();
         converter = commentDivideFiled;
 
-        tableNameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-                    change(this.inputTextArea.getText());
-                }
-        );
 
     }
 
@@ -116,20 +131,21 @@ public class AddDbFieldController implements Initializable {
         inputTextArea.setPromptText(
                 "例\r" +
                         "/** ユーザID　*/\r" +
+                        "@Annotation\n\r" +
                         "private String userId;\r" +
                         "\r" +
                         "/** オブジェクト　*/\r" +
-                        "private String object;\r"
+                        "private Object object;\r"
         );
         outputTextArea.setPromptText(
                 "例\r" +
                         "/** ユーザID　*/\r" +
-                        "@DB(TableName.USER_ID)\r" +
-                        "private String userId;\r" +
+                        "@BindingProperty(controller=\"\",bean=\"userId\")\r" +
+                        "private StringProperty userId;\r" +
                         "\r" +
                         "/** オブジェクト　*/\r" +
-                        "@DB(TableName.OBJECT)\r" +
-                        "private String object;\r"
+                        "@BindingProperty(controller=\"\",bean=\"object\")\r" +
+                        "private ObjectProperty<Object> object;\r"
         );
     }
 

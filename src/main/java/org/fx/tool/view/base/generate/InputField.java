@@ -1,9 +1,8 @@
-package org.fx.tool.view.base.generate.field;
+package org.fx.tool.view.base.generate;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.function.Predicate;
-import java.util.regex.Pattern;
 
 public class InputField {
     private String comment;
@@ -15,6 +14,14 @@ public class InputField {
 
     public String getElement() {
         return element;
+    }
+
+    public String getModifier() {
+        return modifier;
+    }
+
+    public String getSignature() {
+        return signature;
     }
 
     public static class InputFieldBuilder {
