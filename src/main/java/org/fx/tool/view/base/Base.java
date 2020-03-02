@@ -31,6 +31,10 @@ public class Base implements Initializable {
 
         ModelToModeAccessorView("/org/fx/tool/view/base/generate/accessor/model_to_accessor/ModelToModeAccessorView.fxml"),
 
+        DefineToFieldView("/org/fx/tool/view/base/generate/field/define_field/DefineToFieldView.fxml"),
+        
+        DefineToViewFieldView("/org/fx/tool/view/base/generate/field/define_view_field/DefineToViewFieldView.fxml"),
+        
         Ui3("/org/fx/tool/view/base/ui3/Ui3.fxml");
 
 
@@ -86,7 +90,16 @@ public class Base implements Initializable {
         loadUi(Path.ModelToModeAccessorView);
     }
 
+    @FXML
+    private void ui8(ActionEvent event) {
+        loadUi(Path.DefineToFieldView);
+    }
 
+    @FXML
+    private void ui9(ActionEvent event) {
+        loadUi(Path.DefineToViewFieldView);
+    }
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
