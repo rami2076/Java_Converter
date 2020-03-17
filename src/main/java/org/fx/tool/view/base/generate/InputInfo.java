@@ -3,11 +3,16 @@ package org.fx.tool.view.base.generate;
 public class InputInfo {
     private String comment;
     private String field;
+    private String signature;
+
+    public String getSignature() {
+        return signature;
+    }
 
     public static class InputInfoBuilder {
         private String comment;
         private String field;
-
+        private String signature;
 
         public static InputInfoBuilder get() {
             return new InputInfoBuilder();
@@ -23,15 +28,36 @@ public class InputInfo {
             return this;
         }
 
+        public InputInfoBuilder setSignature(String signature) {
+
+            switch (signature) {
+            case "VARCHAR2":
+                signature = "String";
+                break;
+            case "DATE":
+                signature = "Hizuke";
+                break;
+            case "NUMBER":
+                signature = "BigDecimal";
+            default:
+                signature = "Object";
+                break;
+
+            }
+
+            this.signature = signature;
+            return this;
+        }
+
         public InputInfo build() {
-            return new InputInfo(this.comment, this.field);
+            return new InputInfo(this.comment, this.field, this.signature);
         }
     }
 
-
-    private InputInfo(String comment, String field) {
+    private InputInfo(String comment, String field, String signature) {
         this.comment = comment;
         this.field = field;
+        this.signature = signature;
     }
 
     public String getComment() {

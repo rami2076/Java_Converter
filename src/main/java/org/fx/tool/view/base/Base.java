@@ -35,6 +35,8 @@ public class Base implements Initializable {
         
         DefineToViewFieldView("/org/fx/tool/view/base/generate/field/define_view_field/DefineToViewFieldView.fxml"),
         
+        DefineToFieldWithDbView("/org/fx/tool/view/base/generate/field/db_to_field/DefineToFieldWithDbView.fxml"),
+        
         Ui3("/org/fx/tool/view/base/ui3/Ui3.fxml");
 
 
@@ -98,6 +100,11 @@ public class Base implements Initializable {
     @FXML
     private void ui9(ActionEvent event) {
         loadUi(Path.DefineToViewFieldView);
+    }
+    
+    @FXML
+    private void ui10(ActionEvent event) {
+        loadUi(Path.DefineToFieldWithDbView);
     }
     
     @Override
