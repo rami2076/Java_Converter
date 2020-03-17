@@ -39,6 +39,7 @@ public class InputInfo {
                 break;
             case "NUMBER":
                 signature = "BigDecimal";
+                break;
             default:
                 signature = "Object";
                 break;
