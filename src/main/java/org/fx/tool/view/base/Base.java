@@ -15,7 +15,6 @@ import java.util.ResourceBundle;
 
 public class Base implements Initializable {
 
-
     enum Path {
         CommentToFieldView("/org/fx/tool/view/base/generate/field/commnet_field/CommentToFieldView.fxml"),
 
@@ -23,22 +22,27 @@ public class Base implements Initializable {
 
         AddDbFieldView("/org/fx/tool/view/base/generate/field/field_field/AddDbFieldView.fxml"),
 
-        FieldToCommentAddDbView("/org/fx/tool/view/base/generate/field/field_comment_add_db/FieldToCommentAddDbView.fxml"),
+        FieldToCommentAddDbView(
+                "/org/fx/tool/view/base/generate/field/field_comment_add_db/FieldToCommentAddDbView.fxml"),
 
-        BeanToDisuniteModelFieldView("/org/fx/tool/view/base/generate/field/bean_to_model/disunite/BeanToDisuniteModelFieldView.fxml"),
+        BeanToDisuniteModelFieldView(
+                "/org/fx/tool/view/base/generate/field/bean_to_model/disunite/BeanToDisuniteModelFieldView.fxml"),
 
-        BeanToUniteModelFieldView("/org/fx/tool/view/base/generate/field/bean_to_model/unite/BeanToUniteModelFieldView.fxml"),
+        BeanToUniteModelFieldView(
+                "/org/fx/tool/view/base/generate/field/bean_to_model/unite/BeanToUniteModelFieldView.fxml"),
 
-        ModelToModeAccessorView("/org/fx/tool/view/base/generate/accessor/model_to_accessor/ModelToModeAccessorView.fxml"),
+        ModelToModeAccessorView(
+                "/org/fx/tool/view/base/generate/accessor/model_to_accessor/ModelToModeAccessorView.fxml"),
 
         DefineToFieldView("/org/fx/tool/view/base/generate/field/define_field/DefineToFieldView.fxml"),
-        
-        DefineToViewFieldView("/org/fx/tool/view/base/generate/field/define_view_field/DefineToViewFieldView.fxml"),
-        
-        DefineToFieldWithDbView("/org/fx/tool/view/base/generate/field/db_to_field/DefineToFieldWithDbView.fxml"),
-        
-        Ui3("/org/fx/tool/view/base/ui3/Ui3.fxml");
 
+        DefineToViewFieldView("/org/fx/tool/view/base/generate/field/define_view_field/DefineToViewFieldView.fxml"),
+
+        DefineToFieldWithDbView("/org/fx/tool/view/base/generate/field/db_to_field/DefineToFieldWithDbView.fxml"),
+
+        GenerateCharacterView("/org/fx/tool/view/base/generate/character/GenerateCharacterView.fxml"),
+
+        Ui3("/org/fx/tool/view/base/ui3/Ui3.fxml");
 
         private String pathString;
 
@@ -50,7 +54,6 @@ public class Base implements Initializable {
             return this.pathString;
         }
     }
-
 
     @FXML
     private BorderPane borderPane;
@@ -101,12 +104,17 @@ public class Base implements Initializable {
     private void ui9(ActionEvent event) {
         loadUi(Path.DefineToViewFieldView);
     }
-    
+
     @FXML
     private void ui10(ActionEvent event) {
         loadUi(Path.DefineToFieldWithDbView);
     }
-    
+
+    @FXML
+    private void ui11(ActionEvent event) {
+        loadUi(Path.GenerateCharacterView);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -121,10 +129,8 @@ public class Base implements Initializable {
             return;
         }
 
-
         Parent root = null;
         URL location = getClass().getResource(path.getPathString());
-
 
         try {
             root = FXMLLoader.load(location);

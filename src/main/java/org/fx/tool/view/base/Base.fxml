@@ -18,6 +18,7 @@
             <Button mnemonicParsing="false" onAction="#ui8" prefHeight="25.0" prefWidth="109.0" text="UI8" />
             <Button mnemonicParsing="false" onAction="#ui9" prefHeight="25.0" prefWidth="109.0" text="UI9" />
             <Button mnemonicParsing="false" onAction="#ui10" prefHeight="25.0" prefWidth="109.0" text="UI10" />
+            <Button mnemonicParsing="false" onAction="#ui11" prefHeight="25.0" prefWidth="109.0" text="UI11" />
          </children>
       </VBox>
    </left>
