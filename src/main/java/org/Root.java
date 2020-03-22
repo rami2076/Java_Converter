@@ -23,6 +23,9 @@ public class Root extends Application {
         Scene scene = new Scene(root);
 
         primaryStage.setScene(scene);
+
+        primaryStage.centerOnScreen();
+
         primaryStage.show();
     }
 }
