@@ -48,11 +48,19 @@ public class DefineToFieldWithDbController implements Initializable {
         String annotation = format(element);
         String field = String.join(" ", "private", inputInfo.getSignature(), element, ";");
 
+        if (annotation.isEmpty()) {
+            return String.join("\n", comment, field).toString();
+        }
         return String.join("\n", comment, annotation, field).toString();
     };
 
     private String format(String element) {
         String tableName = Optional.ofNullable(this.tableNameTextField.getText()).orElse("");
+
+        if (tableName.isEmpty()) {
+            return tableName;
+        }
+
         String columnName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, element);
         return String.format("@DB(\"%s.%s\")", tableName, columnName);
     }
