@@ -1,23 +1,26 @@
 package org.fx.tool.view.base.generate.character;
 
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
+import java.util.function.Function;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.google.common.base.CaseFormat;
+
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToggleGroup;
-
-import org.apache.commons.lang3.StringUtils;
-import org.fx.tool.view.base.generate.InputInfo;
-
-import com.google.common.base.CaseFormat;
-
-import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.function.Function;
 
 public class GenerateCharacterController implements Initializable {
 
@@ -33,6 +36,10 @@ public class GenerateCharacterController implements Initializable {
 
     @FXML
     private TextArea outputTextArea;
+
+    //改行数
+    @FXML
+    private TextField lineSeparatorCountTextField;
 
     //ケースボタン　入力
     @FXML
@@ -66,11 +73,13 @@ public class GenerateCharacterController implements Initializable {
 
     private CaseFormat inputCaseFormat = CaseFormat.UPPER_UNDERSCORE;
 
-    private CaseFormat outputCaseFormat =CaseFormat.UPPER_UNDERSCORE;
+    private CaseFormat outputCaseFormat = CaseFormat.UPPER_UNDERSCORE;
 
     private ChangeListener<String> changeLister = (observable, oldValue, newValue) -> {
         change(newValue);
     };
+
+    private String lineSeparetor = "\n";
 
     private Function<String, String> converter;
 
@@ -105,7 +114,12 @@ public class GenerateCharacterController implements Initializable {
 
                     return line;
                 }).map(this.converter)
-                .reduce("", (one, two) -> String.join("\n\n", one, two).toString());
+                .reduce("",
+                        (one, two) -> String.join(StringUtils.repeat(lineSeparetor,
+                                Optional.<String> of(this.lineSeparatorCountTextField.getText())
+                                        .map(s -> StringUtils.defaultIfBlank(s, "2"))
+                                        .map(Integer::parseInt).orElse(2)),
+                                one, two).toString());
         outputTextArea.setText(fields);
     }
 
@@ -117,9 +131,33 @@ public class GenerateCharacterController implements Initializable {
         initPromptText();
         converter = commentDivideFiled;
 
+        lineSeparatorCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            String str = newValue;
+            if (str == null) {
+                return;
+            }
+            if (str.length() > 1) {
+                lineSeparatorCountTextField.setText(oldValue);
+            }
+
+            change(this.inputTextArea.getText());
+        });
+
+        Pattern numberPattern = Pattern.compile("^[^1-5]{1}$");
+        TextFormatter<String> lowerFormatter = new TextFormatter<>(change -> {
+            String newStr = numberPattern.matcher(change.getText()).replaceAll("");
+
+            int diffcount = change.getText().length() - newStr.length();
+            change.setAnchor(change.getAnchor() - diffcount);
+            change.setCaretPosition(change.getCaretPosition() - diffcount);
+            change.setText(newStr);
+            return change;
+        });
+
+        lineSeparatorCountTextField.setTextFormatter(lowerFormatter);
+
         inputCaseGroup.selectedToggleProperty().addListener((observable, oldProperty, newProperty) -> {
             RadioButton r = (RadioButton) newProperty;
-
 
             if (r.equals(inConstantRadio)) {
                 inputCaseFormat = CaseFormat.UPPER_UNDERSCORE;
@@ -139,7 +177,6 @@ public class GenerateCharacterController implements Initializable {
 
         outputCaseGroup.selectedToggleProperty().addListener((observable, oldProperty, newProperty) -> {
             RadioButton r = (RadioButton) newProperty;
-
 
             if (r.equals(outConstantRadio)) {
                 outputCaseFormat = CaseFormat.UPPER_UNDERSCORE;

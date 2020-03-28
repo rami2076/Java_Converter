@@ -4,6 +4,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -46,6 +47,12 @@
                   <RadioButton fx:id="outPascalRadio" mnemonicParsing="false" text="PascalCase" toggleGroup="$outputCaseGroup" />
                   <RadioButton fx:id="outSnakeRadio" mnemonicParsing="false" text="snake_case" toggleGroup="$outputCaseGroup" />
                   <RadioButton fx:id="outSpaceRadio" disable="true" mnemonicParsing="false" text="space case" toggleGroup="$outputCaseGroup" />
+               </children>
+            </VBox>
+            <VBox prefHeight="157.0" prefWidth="183.0">
+               <children>
+                  <Label text="Input Number of line breaks." />
+                  <TextField fx:id="lineSeparatorCountTextField" promptText="改行数を入力(0-5) デフォルト=2" />
                </children>
             </VBox>
             </children>
