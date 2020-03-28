@@ -41,6 +41,8 @@ public class Base implements Initializable {
         DefineToFieldWithDbView("/org/fx/tool/view/base/generate/field/db_to_field/DefineToFieldWithDbView.fxml"),
 
         GenerateCharacterView("/org/fx/tool/view/base/generate/character/GenerateCharacterView.fxml"),
+        
+        DefineToMethodView("/org/fx/tool/view/base/generate/set_method/define_to_method/DefineToMethodView.fxml"),
 
         Ui3("/org/fx/tool/view/base/ui3/Ui3.fxml");
 
@@ -115,6 +117,11 @@ public class Base implements Initializable {
         loadUi(Path.GenerateCharacterView);
     }
 
+    @FXML
+    private void ui12(ActionEvent event) {
+        loadUi(Path.DefineToMethodView);
+    }
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
